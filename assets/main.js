@@ -5,6 +5,14 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
+  // --- rechargement : on repart toujours du haut de la page d'accueil
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    scrollTo({ top: 0, behavior: 'instant' });
+    addEventListener('load', () => scrollTo({ top: 0, behavior: 'instant' }), { once: true });
+  }
+
   requestAnimationFrame(() => setTimeout(() => {
     doc.classList.add('ready');
     $('.nav-wrap').classList.add('show');
@@ -26,6 +34,13 @@
   $$('[data-open-cv]').forEach(b => b.addEventListener('click', () => modal.showModal()));
   $('[data-close]', modal).addEventListener('click', () => modal.close());
   modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
+  // langue du CV : change l'aperçu et le PDF téléchargé
+  const cvTabs = $$('[data-cv-lang]', modal);
+  cvTabs.forEach(b => b.addEventListener('click', () => {
+    cvTabs.forEach(x => x.toggleAttribute('aria-current', x === b));
+    $('.cv-img', modal).src = `../cv/preview-${b.dataset.cvLang}.png`;
+    $('.cv-pdf', modal).href = b.dataset.pdf;
+  }));
 
   // --- aperçu mobile : le site dans un cadre de téléphone
   if (window.self !== window.top) doc.classList.add('in-frame');
@@ -55,36 +70,6 @@
   }), { threshold: .2 });
   $$('[data-reveal]').forEach(el => io.observe(el));
 
-  // --- Jumeirah : les rôles s'enchaînent
-  const roles = $$('.roles li');
-  let roleTimer;
-  const playRoles = () => {
-    let i = 0;
-    roles.forEach(r => r.classList.remove('on', 'cur'));
-    clearInterval(roleTimer);
-    const step = () => {
-      roles.forEach((r, k) => { r.classList.toggle('on', k <= i); r.classList.toggle('cur', k === i); });
-      if (++i >= roles.length) { clearInterval(roleTimer); setTimeout(playRoles, 3200); }
-    };
-    step(); roleTimer = setInterval(step, 1100);
-  };
-  if (roles.length) {
-    if (reduce) roles.forEach(r => r.classList.add('on'));
-    else new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { playRoles(); o.disconnect(); } }, { threshold: .4 }).observe($('.feat'));
-  }
-
-  // --- Loewe : inclinaison
-  if (matchMedia('(pointer: fine)').matches && !reduce) {
-    $$('[data-tilt]').forEach(el => {
-      el.addEventListener('mousemove', e => {
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-        el.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
-      });
-      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-    });
-  }
-
   // --- reflet qui suit la souris sur les cartes
   if (matchMedia('(pointer: fine)').matches) {
     $$('.spot').forEach(el => el.addEventListener('mousemove', e => {
@@ -94,22 +79,76 @@
     }));
   }
 
-  // --- En chiffres : les chiffres défilent jusqu'à leur valeur
-  const counts = $$('[data-count]');
-  if (counts.length && !reduce) {
-    counts.forEach(el => { el.textContent = '0'; });
-    new IntersectionObserver((es, o) => {
-      if (!es[0].isIntersecting) return;
-      o.disconnect();
-      const t0 = performance.now();
-      const tick = now => {
-        const k = clamp((now - t0) / 1400);
-        const ease = 1 - Math.pow(1 - k, 3);
-        counts.forEach(el => { el.textContent = Math.round(+el.dataset.count * ease); });
-        if (k < 1) requestAnimationFrame(tick);
-      };
+  // --- cartes de langues : la première passe derrière, en boucle
+  const cards = $$('.flyer');
+  if (cards.length && !reduce) {
+    let order = cards.slice();
+    setInterval(() => {
+      if (document.hidden) return;
+      const top = order.shift();
+      order.push(top);
+      top.classList.add('deal');
+      top.addEventListener('animationend', () => top.classList.remove('deal'), { once: true });
+      order.forEach((c, i) => { c.classList.remove('p0', 'p1', 'p2'); c.classList.add('p' + i); });
+    }, 2600);
+  }
+
+  // --- projets : l'invite s'écrit, s'envoie, puis passe à la suivante
+  const prompt = $('.prompt');
+  if (prompt && !reduce) {
+    const texts = JSON.parse(prompt.dataset.prompts);
+    const out = $('.prompt-t', prompt);
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const run = async () => {
+      for (let k = 0; ; k = (k + 1) % texts.length) {
+        prompt.classList.remove('sent');
+        for (let n = 0; n <= texts[k].length; n++) { out.textContent = texts[k].slice(0, n); await wait(32); }
+        await wait(500); prompt.classList.add('sent');
+        await wait(1500); out.textContent = '';
+        await wait(350);
+      }
+    };
+    out.textContent = '';
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); run(); } }, { threshold: .4 }).observe(prompt);
+  }
+
+  // --- refonte : la barre balaie toute seule l'avant et l'après ; on la prend en main en maintenant le clic
+  const ba = $('.ba');
+  if (ba) {
+    const view = $('.ba-view', ba), imgs = $$('.ba-img', ba);
+    let split = 100, target = 0, hold = 1200, scroll = 0, dir = 1, held = false, seen = false, last = 0;
+    const paint = () => {
+      ba.style.setProperty('--split', split + '%');
+      ba.classList.toggle('is-new', split < 50);
+      imgs.forEach(im => { im.style.transform = `translateY(${-scroll * Math.max(0, im.offsetHeight - view.clientHeight)}px)`; });
+    };
+    const tick = now => {
+      const dt = Math.min(64, now - (last || now)); last = now;
+      if (seen && !held && !document.hidden) {
+        if (hold > 0) hold -= dt;
+        else {
+          const step = dt * .032;                                          // ~3 s pour traverser
+          split += clamp(target - split, -step, step);
+          if (split === target) { target = target ? 0 : 100; hold = 1400; }
+        }
+        scroll = clamp(scroll + dir * dt / 40000);                         // les pages défilent doucement
+        if (scroll === 0 || scroll === 1) dir = -dir;
+        paint();
+      }
       requestAnimationFrame(tick);
-    }, { threshold: .4 }).observe($('.stats-card'));
+    };
+    const follow = e => { const r = view.getBoundingClientRect(); split = clamp((e.clientX - r.left) / r.width) * 100; paint(); };
+    view.addEventListener('pointerdown', e => { held = true; view.setPointerCapture(e.pointerId); ba.classList.add('is-held'); follow(e); });
+    view.addEventListener('pointermove', e => { if (held) follow(e); });
+    const release = () => { if (!held) return; held = false; ba.classList.remove('is-held'); target = split < 50 ? 100 : 0; hold = 1800; };
+    view.addEventListener('pointerup', release);
+    view.addEventListener('pointercancel', release);
+    imgs.forEach(im => im.addEventListener('load', paint));
+    if (reduce) { split = 50; paint(); }
+    else {
+      new IntersectionObserver(es => { seen = es[0].isIntersecting; }, { threshold: .25 }).observe(ba);
+      requestAnimationFrame(tick);
+    }
   }
 
   // --- scroll : trajet, nav active
@@ -120,11 +159,15 @@
   const legs = $$('.leg', routeSec);
   const L = line.getTotalLength();
   line.style.strokeDasharray = L;
-  // position de chaque escale le long du tracé (0, 1/3, 2/3, 1)
-  const at = stops.map((g, i) => {
-    const len = L * i / (stops.length - 1);
-    const pt = line.getPointAtLength(len);
-    g.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+  // distance parcourue sur le tracé jusqu'à chaque escale (data-d = tracé jusqu'à elle)
+  const svg = line.ownerSVGElement;
+  const at = stops.map(g => {
+    if (!g.dataset.d) return 0;
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', g.dataset.d);
+    svg.appendChild(p);
+    const len = p.getTotalLength();
+    p.remove();
     return len;
   });
   const navLinks = $$('.nav-links a');

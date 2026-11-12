@@ -12,7 +12,7 @@
 <script>try{var s=localStorage.getItem('cl-theme');if(s)document.documentElement.dataset.theme=s;}catch(_){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/style.css?v=b177776e">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -20,7 +20,7 @@
 <header class="nav-wrap">
   <nav class="nav-pill" aria-label="Navigation">
     <a class="nav-name" href="#top">Clément Lemaine</a>
-    <span class="nav-links"><a href="#parcours">Journey</a><a href="#experiences">Experience</a><a href="#formation">Education</a><a href="#contact">Contact</a></span>
+    <span class="nav-links"><a href="#parcours">Journey</a><a href="#experiences">Experience</a><a href="#projets">Projects</a><a href="#formation">Education</a><a href="#contact">Contact</a></span>
     <button class="btn-cv" type="button" data-open-cv>CV</button>
     <span class="seg"><a href="../fr/" hreflang="fr">FR</a><a href="../en/" hreflang="en" aria-current="true">EN</a><a href="../es/" hreflang="es">ES</a></span>
     <button class="theme" type="button" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg></button>
@@ -31,7 +31,7 @@
 <section class="hero" id="top">
   <div class="hero-light" aria-hidden="true"></div>
   <div class="hero-top">
-    <p class="hero-label">Hospitality management</p>
+    <p class="hero-label">Hospitality management<span class="hero-sub">AI &amp; tool and web creation</span></p>
     <p class="hero-label">Madrid, Spain</p>
   </div>
   <div class="hero-mid">
@@ -51,59 +51,58 @@
   <div class="route-pin">
     <div class="wrap">
       <div class="route-head">
-        <div><p class="eyebrow">Step by step</p><h2>My Journey</h2></div>
+        <div><p class="eyebrow">The cities I have lived in</p><h2>My Journey</h2></div>
         <p class="route-hint">Scroll to take the trip <span>↓</span></p>
       </div>
       <div class="route-map">
         <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <path class="route-ghost" d="M60 210 C 180 40, 300 40, 380 150 S 560 280, 660 150 S 860 40, 940 170"/>
-          <path class="route-line" d="M60 210 C 180 40, 300 40, 380 150 S 560 280, 660 150 S 860 40, 940 170"/>
-          <g class="stop" data-stop="0"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" y="-26">2017</text><text class="stop-city" y="40">Madrid</text></g><g class="stop" data-stop="1"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" y="-26">2022</text><text class="stop-city" y="40">Loewe</text></g><g class="stop" data-stop="2"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" y="-26">2025</text><text class="stop-city" y="40">Vatel</text></g><g class="stop" data-stop="3"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" y="-26">2026</text><text class="stop-city" y="40">Mallorca</text></g>
+          <text class="map-land" x="800" y="60">FRANCE</text><text class="map-land" x="130" y="285">ESPAÑA</text><text class="map-land" x="860" y="288">MEDITERRANEAN</text>
+          <path class="route-ghost" d="M560 46 C 470 60, 330 100, 300 190 C 420 90, 620 90, 700 214 C 600 300, 380 290, 300 190"/>
+          <path class="route-line" d="M560 46 C 470 60, 330 100, 300 190 C 420 90, 620 90, 700 214 C 600 300, 380 290, 300 190"/>
+          <g class="stop" data-stop="0" data-d="" transform="translate(560 46)"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" x="22" y="-18" text-anchor="start">PAR</text><text class="stop-city" x="22" y="9" text-anchor="start">Paris</text></g><g class="stop" data-stop="1" data-d="M560 46 C 470 60, 330 100, 300 190" transform="translate(300 190)"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" x="-22" y="-18" text-anchor="end">MAD</text><text class="stop-city" x="-22" y="9" text-anchor="end">Madrid</text></g><g class="stop" data-stop="2" data-d="M560 46 C 470 60, 330 100, 300 190 C 420 90, 620 90, 700 214" transform="translate(700 214)"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/><text class="stop-code" x="22" y="-18" text-anchor="start">PMI</text><text class="stop-city" x="22" y="9" text-anchor="start">Mallorca</text></g><g class="stop" data-stop="3" data-d="M560 46 C 470 60, 330 100, 300 190 C 420 90, 620 90, 700 214 C 600 300, 380 290, 300 190" transform="translate(300 190)"><circle class="stop-halo" r="18"/><circle class="stop-dot" r="7"/></g>
           <g class="plane"><path d="M-12 0 L10 -2 L14 0 L10 2 Z M-2 -1 L-6 -11 L-2 -11 L5 -1 Z M-2 1 L-6 11 L-2 11 L5 1 Z M-11 -1 L-14 -6 L-12 -6 L-8 -1 Z M-11 1 L-14 6 L-12 6 L-8 1 Z"/></g>
         </svg>
       </div>
       <div class="legs">
           <article class="leg is-on" data-leg="0">
             <div class="leg-head">
-              <p class="leg-meta">Stop 01 · Lycée Français de Madrid · 2017 — 2025</p>
-              <h3 class="leg-city">Madrid</h3>
+              <p class="leg-meta">Stop 01 · France · Until 2017</p>
+              <h3 class="leg-city">Paris</h3>
               <p class="leg-title">Where it all began</p>
             </div>
-            <div class="leg-body"><ul><li><span class="it-role">Brevet, with honours</span><span class="it-venue">Lycée Français de Madrid</span><span class=it-year>2020</span></li><li><span class="it-role">Babysitting</span><span class="it-venue">School families</span></li><li><span class="it-role">Baccalauréat, with honours</span><span class="it-venue">LLCER AMC · SES</span><span class=it-year>2025</span></li></ul><p class="leg-note">Eight years at the Lycée Français, between English, economics and the theatre stage.</p>
-              <a class="leg-more" href="#formation">See the details <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+            <div class="leg-body"><ul><li><span class="it-role">Born</span><span class="it-venue">Paris</span></li><li><span class="it-role">Mother tongue</span><span class="it-venue">French</span></li></ul><p class="leg-note">The early years, before moving to Spain.</p>
+              </div>
           </article>
           <article class="leg" data-leg="1">
             <div class="leg-head">
-              <p class="leg-meta">Stop 02 · Madrid · LVMH Group · June 2022</p>
-              <h3 class="leg-city">Loewe</h3>
-              <p class="leg-title">First step into luxury</p>
+              <p class="leg-meta">Stop 02 · Spain · 2017 — 2026</p>
+              <h3 class="leg-city">Madrid</h3>
+              <p class="leg-title">Growing up in Madrid</p>
             </div>
-            <div class="leg-body"><ul><li><span class="it-role">Internship</span><span class="it-venue">Loewe Madrid</span><span class=it-year>2022</span></li><li><span class="it-role">Sales · logistics · brand</span><span class="it-venue">Observing and supporting</span></li></ul><p class="leg-note">A close look at how a great house welcomes and serves its clients.</p>
+            <div class="leg-body"><ul><li><span class="it-role">Brevet, then Baccalauréat with honours</span><span class="it-venue">Lycée Français de Madrid</span><span class=it-year>2020 · 25</span></li><li><span class="it-role">Internship</span><span class="it-venue">Loewe · LVMH Group</span><span class=it-year>2022</span></li><li><span class="it-role">Bachelor, 1st year</span><span class="it-venue">Vatel Madrid</span><span class=it-year>2025</span></li></ul><p class="leg-note">Eight years at the Lycée Français, Spanish every day, theatre and rugby, then Vatel.</p>
               <a class="leg-more" href="#loewe">See the details <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
           </article>
           <article class="leg" data-leg="2">
             <div class="leg-head">
-              <p class="leg-meta">Stop 03 · Madrid · 2025 — present</p>
-              <h3 class="leg-city">Vatel</h3>
-              <p class="leg-title">School</p>
-            </div>
-            <div class="leg-body"><ul><li><span class="it-role">Bachelor in Hospitality Management</span><span class="it-venue">Vatel Madrid</span><span class=it-year>2025 — 28</span></li><li><span class="it-role">2nd year</span><span class="it-venue">Ongoing</span></li></ul><p class="leg-note">The international school of hospitality management, on its Madrid campus.</p>
-              <a class="leg-more" href="#formation">See the details <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
-          </article>
-          <article class="leg" data-leg="3">
-            <div class="leg-head">
-              <p class="leg-meta">Stop 04 · Balearic Islands · Apr — Sep 2026</p>
+              <p class="leg-meta">Stop 03 · Balearic Islands · Apr — Sep 2026</p>
               <h3 class="leg-city">Mallorca</h3>
               <p class="leg-title">Five stars</p>
             </div>
-            <div class="leg-body"><ul><li><span class="it-role">Housekeeping &amp; concierge intern</span><span class="it-venue">Jumeirah Mallorca</span><span class=it-year>6 months</span></li></ul><p class="leg-note">Six months in a luxury resort, from April to September.</p>
+            <div class="leg-body"><ul><li><span class="it-role">Housekeeping &amp; concierge intern</span><span class="it-venue">Jumeirah Mallorca</span><span class=it-year>6 months</span></li></ul><p class="leg-note">Six months on the island, in a luxury resort, from April to September.</p>
               <a class="leg-more" href="#jumeirah">See the details <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+          </article>
+          <article class="leg" data-leg="3">
+            <div class="leg-head">
+              <p class="leg-meta">Stop 04 · Spain · Since Sep 2026</p>
+              <h3 class="leg-city">Madrid</h3>
+              <p class="leg-title">Back home</p>
+            </div>
+            <div class="leg-body"><ul><li><span class="it-role">Bachelor, 2nd year</span><span class="it-venue">Vatel Madrid</span><span class=it-year>2026 —</span></li></ul><p class="leg-note">Back in Madrid, with a five-star season under my belt.</p>
+              <a class="leg-more" href="#formation">See the details <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
           </article></div>
     </div>
   </div>
 </section>
-
-<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Jumeirah Mallorca</span><b>✦</b> <span>Vatel Madrid</span><b>✦</b> <span>Loewe · LVMH</span><b>✦</b> <span>Lycée Français de Madrid</span><b>✦</b> <span>Guest experience</span><b>✦</b> <span>Housekeeping</span><b>✦</b> <span>Concierge</span><b>✦</b> <span>Madrid</span><b>✦</b> <span>Mallorca</span><b>✦</b><span>Jumeirah Mallorca</span><b>✦</b> <span>Vatel Madrid</span><b>✦</b> <span>Loewe · LVMH</span><b>✦</b> <span>Lycée Français de Madrid</span><b>✦</b> <span>Guest experience</span><b>✦</b> <span>Housekeeping</span><b>✦</b> <span>Concierge</span><b>✦</b> <span>Madrid</span><b>✦</b> <span>Mallorca</span><b>✦</b></div></div>
 
 <section class="sec" id="experiences">
   <div class="wrap">
@@ -115,18 +114,19 @@
         <p class="chip-live"><i></i>Apr — Sep 2026 · Mallorca</p>
         <h3>Six months in a five-star resort.</h3>
         <p>At Jumeirah Mallorca I supported the housekeeping team and welcomed guests at the concierge desk, for a personalised experience in their own language.</p>
-        <ol class="roles"><li style="--k:0"><span class="role-n">1</span><div><strong>Housekeeping</strong><small>Rooms and public areas to 5-star standards</small></div></li><li style="--k:1"><span class="role-n">2</span><div><strong>Concierge</strong><small>Requests, bookings, local tips</small></div></li><li style="--k:2"><span class="role-n">3</span><div><strong>Guest experience</strong><small>In French, English and Spanish</small></div></li></ol>
-        <p class="feat-name">Jumeirah Mallorca <span>· 5★ luxury resort</span></p>
+        <ol class="months"><li style="--k:0">Apr</li><li style="--k:1">May</li><li style="--k:2">Jun</li><li style="--k:3">Jul</li><li style="--k:4">Aug</li><li style="--k:5">Sep</li></ol>
+        <ul class="duties"><li><strong>Housekeeping</strong><small>Rooms and public areas to 5-star standards</small></li><li><strong>Concierge</strong><small>Requests, bookings, local tips</small></li><li><strong>Guest experience</strong><small>In French, English and Spanish</small></li></ul>
+        <p class="feat-name">Jumeirah Mallorca <span>· Luxury resort</span><span class="stars" aria-hidden="true"><i style="--k:0">★</i><i style="--k:1">★</i><i style="--k:2">★</i><i style="--k:3">★</i><i style="--k:4">★</i></span></p>
       </article>
 
       <article class="card side-exp spot" id="loewe" data-reveal>
-        <div class="side-visual" data-tilt>
-          <div class="keycard">
-            <div class="keycard-top"><span class="keycard-logo">LOEWE</span><span>MADRID · LVMH</span></div>
-            <div class="keycard-chip"></div>
-            <div class="keycard-bottom"><span>Intern</span><b>2022</b></div>
+        <div class="side-visual" aria-hidden="true">
+          <div class="bag">
+            <span class="tissue"></span><span class="tissue t2"></span>
+            <span class="bag-handle"></span>
+            <span class="bag-body"><b>LOEWE</b><small>MADRID</small></span>
+            <span class="bag-tag"><b>2022</b><small>Intern</small></span>
           </div>
-          <div class="luggage"><span>MAD</span><small>Clément L.</small></div>
         </div>
         <div class="side-copy">
           <p class="eyebrow-sm">Internship · June 2022 · Loewe Madrid</p>
@@ -140,32 +140,82 @@
     <article class="card stats-card spot" id="chiffres" data-reveal>
       <div class="stats-copy">
         <p class="eyebrow-sm">In numbers</p>
-        <div class="stats"><div class="stat"><p class="big-n" data-count="6">6</p><h3>months in five stars</h3><p>At Jumeirah Mallorca, in housekeeping and at the concierge desk, April to September 2026.</p></div><div class="stat"><p class="big-n" data-count="3">3</p><h3>languages every day</h3><p>Native French, English and Spanish C1: I welcome every guest in their own language.</p></div><div class="stat"><p class="big-n" data-count="4">4</p><h3>years on stage</h3><p>Theatre gave me confidence in public speaking and a taste for welcoming an audience.</p></div></div>
+        <div class="stats"><div class="stat" style="--k:0"><p class="big-n odo" aria-label="6"><span class="odo-col" style="--n:6"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></p><h3>months in five stars</h3><p>At Jumeirah Mallorca, in housekeeping and at the concierge desk, April to September 2026.</p></div><div class="stat" style="--k:1"><p class="big-n odo" aria-label="3"><span class="odo-col" style="--n:3"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></p><h3>languages every day</h3><p>Native French, English and Spanish C1: I welcome every guest in their own language.</p></div><div class="stat" style="--k:2"><p class="big-n odo" aria-label="4"><span class="odo-col" style="--n:4"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></p><h3>years on stage</h3><p>Theatre gave me confidence in public speaking and a taste for welcoming an audience.</p></div></div>
       </div>
-      <div class="flyers" aria-hidden="true"><div class="flyer f0"><span class="flyer-k">FR · native</span><strong>Bonjour</strong><span class="flyer-d">Clément L.</span></div><div class="flyer f1"><span class="flyer-k">EN · C1</span><strong>Hello</strong><span class="flyer-d">Clément L.</span></div><div class="flyer f2"><span class="flyer-k">ES · C1</span><strong>Hola</strong><span class="flyer-d">Clément L.</span></div></div>
+      <div class="flyers" aria-hidden="true"><div class="flyer f0 p0"><span class="flyer-k">FR · native</span><strong>Bonjour</strong><span class="flyer-d">Clément L.</span></div><div class="flyer f1 p1"><span class="flyer-k">EN · C1</span><strong>Hello</strong><span class="flyer-d">Clément L.</span></div><div class="flyer f2 p2"><span class="flyer-k">ES · C1</span><strong>Hola</strong><span class="flyer-d">Clément L.</span></div></div>
     </article>
 
-    <article class="card proj spot" id="digital" data-reveal>
-      <div class="proj-head">
-        <div><p class="eyebrow-sm">AI &amp; digital</p><h3>Working smarter</h3><p class="proj-sub">AI tools · websites &amp; apps · Microsoft Office</p></div>
-        <span class="tags"><span class="tag">AI</span><span class="tag">Websites</span><span class="tag">Apps</span><span class="tag">Office</span></span>
-      </div>
-      <p class="proj-p">I use AI tools every day to research, write and get organised faster. And I build websites and apps with them: this portfolio is one.</p>
-      <div class="proj-steps"><p class="steps-h">What I do with it</p><ol><li style="--k:0"><span class="step-n">1</span><strong>Research</strong><small>Find, check, summarise</small></li><li style="--k:1"><span class="step-n">2</span><strong>Writing</strong><small>Emails, reports, presentations</small></li><li style="--k:2"><span class="step-n">3</span><strong>Productivity</strong><small>Word, Excel, PowerPoint</small></li><li style="--k:3"><span class="step-n">4</span><strong>Creation</strong><small>Websites &amp; apps, like this one</small></li></ol></div>
-    </article>
   </div>
 </section>
 
-<section class="statement-band">
-  <div class="wrap statement-grid">
-    <div>
-      <p class="eyebrow-sm" data-reveal>Off duty</p>
-      <h2 class="h-xl" data-reveal>Always <span class="u">in play.<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 80 4, 200 4, 296 10"/></svg></span></h2>
+<section class="sec" id="projets">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>AI &amp; digital</p>
+    <h2 class="h2-lg" data-reveal>What I&#x27;ve built</h2>
+    <div class="pj-intro" data-reveal>
+      <p class="proj-p">I use AI every day, mostly to build things: tools that solve real problems, websites, apps. This portfolio is one of them.</p>
+      <div class="prompt" data-prompts="[&quot;Turn this invoice into PrestaShop product pages&quot;, &quot;Rebuild the DRM Fishing site, mobile first&quot;, &quot;Tell me when the Nasdaq moves sharply&quot;, &quot;Build a three-language portfolio for César&quot;]"><span class="prompt-k">IA</span><p class="prompt-t">Turn this invoice into PrestaShop product pages</p><span class="prompt-send"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
     </div>
-    <div data-reveal>
-      <p class="statement-p">Four years of theatre on stage, six years of rugby, three of basketball. Sport fishing for as long as I can remember, music and travel.</p>
-      <ul class="off-stats"><li><strong>4 years</strong><span>of theatre</span></li><li><strong>6 years</strong><span>of rugby</span></li><li><strong>Fishing</strong><span>a lifelong passion</span></li></ul>
+
+    <div class="pj-duo">
+      <article class="dark-card pj-bot spot" data-reveal>
+        <div class="bot-shots" aria-hidden="true">
+          <div class="bot-screen"><img src="../assets/projects/bot-chart.webp" alt="" width="1400" height="875" loading="lazy"><img class="alt" src="../assets/projects/bot-news.webp" alt="" width="1400" height="875" loading="lazy"></div>
+          <figure class="pj-phone ph-sm"><img src="../assets/projects/bot-mobile.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+        </div>
+        <p class="eyebrow-sm">Personal project · Financial markets</p>
+        <h3>A trading info bot</h3>
+        <p>It watches the Nasdaq around the clock from a server, analyses the market and the news, and sends me alerts on my iPhone. It suggests trade ideas but never places an order on its own.</p>
+        <span class="tags"><span class="tag">24/7 server</span><span class="tag">iPhone alerts</span><span class="tag">Charts</span><span class="tag">News</span></span>
+      </article>
+
+      <article class="card pj-cesar spot" data-reveal>
+        <div class="cs-shots" aria-hidden="true">
+          <div class="cs-browser"><div class="ba-bar"><i></i><i></i><i></i><span class="ba-url">cesarmateu.github.io</span></div>
+            <div class="cs-view"><div class="cs-strip"><img src="../assets/projects/cesar-hero.webp" alt="" width="1400" height="875" loading="lazy"><img src="../assets/projects/cesar-route.webp" alt="" width="1400" height="875" loading="lazy"></div></div></div>
+          <figure class="pj-phone ph-sm"><img src="../assets/projects/cesar-mobile.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+        </div>
+        <p class="eyebrow-sm">Website · Vatel Madrid</p>
+        <h3>A classmate&#x27;s portfolio</h3>
+        <p>For César Mateu, who studies hospitality management at Vatel with me: his journey as an animated map, his experience, his CV as a PDF, in three languages. It was the starting point for this site.</p>
+        <a class="btn btn-quiet btn-sm" href="https://cesarmateu.github.io/en/" target="_blank" rel="noopener">See his site <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </article>
     </div>
+
+    <article class="card pj pj-fichas spot" data-reveal>
+      <div class="pj-copy">
+        <p class="eyebrow-sm">AI tool · DRM Fishing Store, Madrid</p>
+        <h3>From invoice to product page</h3>
+        <ol class="pj-steps"><li><strong>The problem</strong><span>The owner created every product page by hand on his online shop: title, description, photo, category, stock. Hours lost with every delivery.</span></li><li><strong>The solution</strong><span>An app on his phone. He takes a picture of the invoice, a barcode or the packaging: the AI identifies the product, writes the page, cuts out the photo and prepares the draft in PrestaShop.</span></li><li><strong>The safeguard</strong><span>Nothing goes live without his approval, and a product already in the shop only gets its stock updated.</span></li></ol>
+        <p class="pj-stat"><span class="big-n odo" aria-label="240"><span class="odo-col" style="--n:2"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span><span class="odo-col" style="--n:4"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span><span class="odo-col" style="--n:0"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><b>h</b><span class="pj-stat-l">hours of work saved, about 6 weeks</span></p>
+      </div>
+      <div class="pj-phones" aria-hidden="true">
+        <figure class="pj-phone ph-a"><img src="../assets/projects/fichas-1.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+        <figure class="pj-phone ph-b"><img src="../assets/projects/fichas-2.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+      </div>
+    </article>
+
+    <article class="card pj pj-redo spot" data-reveal>
+      <div class="pj-copy">
+        <p class="eyebrow-sm">Web design · local SEO</p>
+        <h3>I redesigned the same shop&#x27;s website</h3>
+        <p>The old PrestaShop store was awkward on mobile, with photos lost in the page and hard navigation. I rebuilt it from scratch: search by brand or technique, aisles by fish species, over 130 brands highlighted. The redesign has been proposed to the owner.</p>
+        <a class="btn btn-primary btn-sm" href="https://seo-agency-beta.vercel.app/#/" target="_blank" rel="noopener">See the new site <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="ba-wrap">
+        <div class="ba" role="img" aria-label="DRM Fishing : Before / After">
+          <div class="ba-bar"><i></i><i></i><i></i><span class="ba-url"><span class="u-old">drmfishing.com</span><span class="u-new">DRM Fishing · New version</span></span></div>
+          <div class="ba-view">
+            <img class="ba-img" src="../assets/projects/drm-after.webp" alt="" width="1000" height="4200" loading="lazy">
+            <div class="ba-before"><img class="ba-img" src="../assets/projects/drm-before.webp" alt="" width="1000" height="3417" loading="lazy"></div>
+            <span class="ba-tag ba-tag-b">Before</span><span class="ba-tag ba-tag-a">After</span>
+            <span class="ba-handle"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 6l-4 4 4 4M12 6l4 4-4 4"/></svg></span>
+          </div>
+        </div>
+        <p class="ba-hint">Click and hold on the screen, then drag to compare for yourself.</p>
+      </div>
+    </article>
+
   </div>
 </section>
 
@@ -200,6 +250,12 @@
           <div class="edu-more"><p>The first diploma, earned at the Lycée Français de Madrid.</p><span class="tags"><span class="tag">Honours</span></span></div>
         </details></li></ul>
       <div class="side">
+        <article class="dark-card off-card spot" data-reveal>
+          <p class="eyebrow-sm">Off duty</p>
+          <h3 class="off-h">Always <span class="u">in play.</span></h3>
+          <p>Four years of theatre on stage, six years of rugby, three of basketball. Sport fishing for as long as I can remember, music and travel.</p>
+          <ul class="off-stats"><li><strong>4 years</strong><span>of theatre</span></li><li><strong>6 years</strong><span>of rugby</span></li><li><strong>Fishing</strong><span>a lifelong passion</span></li></ul>
+        </article>
         <article class="card side-card spot" data-reveal>
           <p class="eyebrow-sm">Languages</p>
           <ul class="langs-list"><li><strong>French</strong><span>native</span></li><li><strong>English</strong><span>C1</span></li><li><strong>Spanish</strong><span>C1</span></li></ul>
@@ -223,7 +279,7 @@
         <div class="row">
           <a class="btn btn-primary" href="../cv/Clement-Lemaine-CV-EN.pdf" download><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4M3 14h10"/></svg> Download my CV</a>
           <a class="btn btn-quiet mail" data-u="cm.lemaine" data-d="vatel.com.es" href="#">…</a>
-          
+          <a class="btn btn-li" href="https://www.linkedin.com/in/cl%C3%A9ment-lemaine-33b3593a6" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg> LinkedIn</a>
         </div>
         <div class="row cv-langs"><span class="cv-langs-l">PDF</span><a class="btn btn-quiet btn-sm" href="../cv/Clement-Lemaine-CV-FR.pdf" download>FR</a><a class="btn btn-quiet btn-sm" href="../cv/Clement-Lemaine-CV-EN.pdf" download>EN</a><a class="btn btn-quiet btn-sm" href="../cv/Clement-Lemaine-CV-ES.pdf" download>ES</a><button class="btn btn-quiet btn-sm" type="button" data-open-cv>Preview</button></div>
         <button class="qr-tile" type="button" data-open-qr>
@@ -243,24 +299,25 @@
 <dialog class="cv-modal">
   <div class="cv-modal-bar">
     <strong>CV — Clément Lemaine</strong>
-    <span class="row"><a class="btn btn-primary btn-sm" href="../cv/Clement-Lemaine-CV-EN.pdf" download><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4M3 14h10"/></svg> PDF</a>
+    <span class="row"><span class="seg cv-seg"><button type="button" data-cv-lang="fr" data-pdf="../cv/Clement-Lemaine-CV-FR.pdf">FR</button><button type="button" data-cv-lang="en" data-pdf="../cv/Clement-Lemaine-CV-EN.pdf" aria-current="true">EN</button><button type="button" data-cv-lang="es" data-pdf="../cv/Clement-Lemaine-CV-ES.pdf">ES</button></span><a class="btn btn-primary btn-sm cv-pdf" href="../cv/Clement-Lemaine-CV-EN.pdf" download><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4M3 14h10"/></svg> PDF</a>
     <button class="btn btn-quiet btn-sm" type="button" data-close>Close</button></span>
   </div>
-  <img src="../cv/preview-en.png" alt="CV — Clément Lemaine" width="794" height="1123">
+  <img class="cv-img" src="../cv/preview-en.png" alt="CV — Clément Lemaine" width="794" height="1123">
 </dialog>
 <dialog class="qr-modal" aria-label="QR code">
-  <img src="../assets/qr.svg" alt="QR code — https://clementlemaine.github.io/clementlemaine-web/" width="320" height="320">
+  <img src="../assets/qr.svg" alt="QR code — https://clementlemaine.github.io/" width="320" height="320">
   <p class="qr-name">Clément Lemaine</p>
-  <p class="qr-url">clementlemaine.github.io/clementlemaine-web</p>
+  <p class="qr-url">clementlemaine.github.io</p>
   <div class="row"><a class="btn btn-quiet btn-sm" href="../assets/qr.png" download="Clement-Lemaine-QR.png"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v10M4 8l4 4 4-4M3 14h10"/></svg> PNG</a>
   <button class="btn btn-primary btn-sm" type="button" data-close>Close</button></div>
 </dialog>
+<a class="li-btn" href="https://www.linkedin.com/in/cl%C3%A9ment-lemaine-33b3593a6" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
 <button class="qr-btn" type="button" data-open-qr aria-label="QR code" title="QR code"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="6" height="6" rx="1"/><rect x="14.5" y="3.5" width="6" height="6" rx="1"/><rect x="3.5" y="14.5" width="6" height="6" rx="1"/><path d="M14.5 14.5h2.5v2.5M20.5 14.5v.01M14.5 20.5h.01M17.5 20.5h3v-3" stroke-linecap="round"/></svg><span>QR code</span></button>
 <button class="phone-btn" type="button" data-phone aria-label="Mobile preview" title="Mobile preview"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg><span>Mobile preview</span></button>
 <dialog class="phone-modal" aria-label="Mobile preview">
   <button class="phone-close" type="button" data-phone-close aria-label="Close">×</button>
   <div class="phone"><div class="phone-notch"></div><div class="phone-status"><span>9:41</span><span class="phone-icons"><i></i><i></i><i></i><b></b></span></div><iframe title="Mobile preview" loading="lazy"></iframe></div>
 </dialog>
-<script src="../assets/main.js"></script>
+<script src="../assets/main.js?v=f9a43294"></script>
 </body>
 </html>
