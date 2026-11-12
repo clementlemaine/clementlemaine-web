@@ -366,7 +366,7 @@ def page(lang):
         </div>
         <div class="row cv-langs"><span class="cv-langs-l">PDF</span>{cv_langs}<button class="btn btn-quiet btn-sm" type="button" data-open-cv>{e(t['cv_view'])}</button></div>
         <button class="qr-tile" type="button" data-open-qr>
-          <img src="../assets/qr.svg" alt="" width="72" height="72">
+          <img src="../assets/qr.svg?v={ver('qr.svg')}" alt="" width="72" height="72">
           <span><strong>{e(t['qr'])}</strong><small>{e(t['qr_p'])}</small></span>
         </button>
       </div>
@@ -388,10 +388,10 @@ def page(lang):
   <img class="cv-img" src="../cv/preview-{lang}.png" alt="CV — {e(NAME)}" width="794" height="1123">
 </dialog>
 <dialog class="qr-modal" aria-label="{e(t['qr'])}">
-  <img src="../assets/qr.svg" alt="{e(t['qr'])} — {e(SITE_URL)}" width="320" height="320">
+  <img src="../assets/qr.svg?v={ver('qr.svg')}" alt="{e(t['qr'])} — {e(SITE_URL)}" width="320" height="320">
   <p class="qr-name">{e(NAME)}</p>
   <p class="qr-url">{e(SITE_URL.replace('https://', '').rstrip('/'))}</p>
-  <div class="row"><a class="btn btn-quiet btn-sm" href="../assets/qr.png" download="Clement-Lemaine-QR.png">{DOWN} PNG</a>
+  <div class="row"><a class="btn btn-quiet btn-sm" href="../assets/qr.png?v={ver('qr.png')}" download="Clement-Lemaine-QR.png">{DOWN} PNG</a>
   <button class="btn btn-primary btn-sm" type="button" data-close>{e(t['close'])}</button></div>
 </dialog>
 {li_float}

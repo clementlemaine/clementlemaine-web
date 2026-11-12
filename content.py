@@ -5,7 +5,7 @@ NAME = "Clément Lemaine"
 FIRST, LAST = "Clément", "Lemaine"
 EMAIL = "cm.lemaine@vatel.com.es"
 PHONE = "+34 650 612 283"
-SITE_URL = "https://clementlemaine.github.io/"  # adresse publique : le QR code y renvoie
+SITE_URL = "https://clementlemaine.github.io/clementlemaine-web/"  # adresse publique : le QR code y renvoie
 LINKEDIN = "https://www.linkedin.com/in/clément-lemaine-33b3593a6"
 
 LANGS = ["fr", "en", "es"]
