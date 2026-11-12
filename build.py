@@ -36,9 +36,10 @@ def pdf_name(lang):
 
 def qr_code():
     """QR code vers le site : SVG pour la page et le CV, PNG haute résolution pour imprimer ou partager."""
-    qr = segno.make(SITE_URL, error="m")
-    qr.save(ROOT / "assets" / "qr.svg", scale=10, border=2, dark="#13233a", light="#f5f8fc")
-    qr.save(ROOT / "assets" / "qr.png", scale=24, border=3, dark="#13233a", light="#f5f8fc")
+    qr = segno.make(SITE_URL, error="q")
+    # noir sur blanc avec la marge standard de 4 modules : le plus lisible pour l'appareil photo d'un téléphone
+    qr.save(ROOT / "assets" / "qr.svg", scale=10, border=4, dark="#000000", light="#ffffff")
+    qr.save(ROOT / "assets" / "qr.png", scale=24, border=4, dark="#000000", light="#ffffff")
 
 
 def ver(name):
@@ -448,7 +449,7 @@ def cv(lang):
     <ul><li>{e(EMAIL)}</li><li>{e(PHONE)}</li><li>{e(t['cv_city'])}</li>{li}<li>{e(t['nationality'])}</li></ul>
     <h3>{e(t['cv_langs_h'])}</h3><ul>{langs}</ul>
     <h3>{e(t['cv_int_h'])}</h3><ul>{ints}</ul>
-    <div class="qr"><img src="../assets/qr.svg" alt=""><p><b>{e(t['cv_qr'])}</b>{e(SITE_URL.replace('https://', '').rstrip('/'))}</p></div>
+    <div class="qr"><img src="../assets/qr.svg" alt=""><p><b>{e(t['cv_qr'])}</b>{e(SITE_URL.replace('https://', '').rstrip('/')).replace('-', '&#8209;').replace('/', '<wbr>/')}</p></div>
   </aside>
   <section>
     <header><p class="kicker">{e(t['cv_title'])} · Vatel Madrid</p><h1>{e(NAME)}</h1></header>
