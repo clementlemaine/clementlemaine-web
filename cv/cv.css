@@ -1,0 +1,32 @@
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font: 400 9.4pt/1.45 "Instrument Sans", sans-serif; color: #16181d; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; height: 297mm; display: grid; grid-template-columns: 68mm 1fr; overflow: hidden; background: #f7f9fc; }
+
+aside { background: #14243a; color: #d6dfeb; padding: 12mm 8mm 10mm; display: flex; flex-direction: column; }
+.qr { margin-top: auto; display: flex; align-items: center; gap: 3mm; padding-top: 5mm; }
+.qr img { width: 19mm; height: 19mm; border-radius: 1.5mm; flex: none; }
+.qr p { margin: 0; font-size: 7pt; line-height: 1.4; color: #b9c5d6; word-break: break-all; }
+.qr b { display: block; font-size: 7.8pt; letter-spacing: .06em; text-transform: uppercase; color: #e2c48a; word-break: normal; }
+.photo { width: 40mm; height: 46mm; object-fit: cover; object-position: center 20%; display: block; margin: 0 auto 8mm; border-radius: 3mm; }
+aside h3, section h2 { font-size: 7.8pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 3mm; }
+aside h3 { margin-top: 6.5mm; color: #e2c48a; }
+aside p { margin: 0; color: #b9c5d6; }
+aside ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6mm; color: #b9c5d6; }
+aside b { color: #fff; font-weight: 600; }
+
+section { padding: 14mm 13mm 10mm 12mm; }
+header { border-bottom: 1px solid #dbe2ec; padding-bottom: 6mm; margin-bottom: 5mm; }
+.kicker { font-size: 8pt; font-weight: 600; text-transform: uppercase; color: #1e3a64; margin: 0 0 2mm; }
+h1 { font-size: 34pt; font-weight: 600; line-height: 1; letter-spacing: -.035em; margin: 0; }
+section h2 { color: #1e3a64; margin-top: 6mm; display: flex; align-items: center; gap: 3mm; }
+section h2::after { content: ""; flex: 1; height: 1px; background: #dbe2ec; }
+.item { display: grid; grid-template-columns: 24mm 1fr; gap: 4mm; padding: 2.1mm 0; break-inside: avoid; }
+.item-when { font-weight: 600; font-size: 8.6pt; }
+.item-when small { display: block; color: #6e747c; font-weight: 400; font-size: 7.6pt; margin-top: .6mm; }
+.item h4 { margin: 0; font-size: 10.6pt; font-weight: 600; letter-spacing: -.01em; }
+.item p { margin: .6mm 0 0; color: #4a4f56; }
+.item p.where { color: #1e3a64; font-weight: 600; font-size: 8.6pt; margin-top: .3mm; }
+.chips { display: flex; flex-wrap: wrap; gap: 2mm; }
+.chips span { border: 1px solid #d6dfeb; background: #e8eef6; border-radius: 99px; padding: 1mm 3mm; font-size: 8.4pt; }
