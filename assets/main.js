@@ -210,7 +210,9 @@
       cueDots.forEach((el, i) => { el.classList.toggle('on', i <= leg); el.classList.toggle('cur', i === leg); });
     }
     const rr = routeSec.getBoundingClientRect();
-    cue.classList.toggle('on', rr.top < innerHeight * .35 && rr.bottom > innerHeight * 1.05 && leg < stops.length - 1);
+    const cueOn = rr.top < innerHeight * .6 && rr.bottom > innerHeight * 1.05 && leg < stops.length - 1;
+    cue.classList.toggle('on', cueOn);
+    doc.classList.toggle('cue-on', cueOn);
 
     doc.classList.toggle('past-hero', scrollY > innerHeight * .6);
 
