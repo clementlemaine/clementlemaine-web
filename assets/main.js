@@ -18,16 +18,22 @@
     $('.nav-wrap').classList.add('show');
   }, 80));
 
-  // --- thème clair / sombre
-  $('.theme').addEventListener('click', () => {
+  // --- thème clair / sombre (aria-pressed : le bouton annonce s'il est en mode sombre)
+  const themeBtn = $('.theme');
+  const syncTheme = () => themeBtn.setAttribute('aria-pressed', String(doc.dataset.theme === 'dark'));
+  syncTheme();
+  themeBtn.addEventListener('click', () => {
     const dark = doc.dataset.theme !== 'dark';
     doc.dataset.theme = dark ? 'dark' : 'light';
     try { localStorage.setItem('cl-theme', doc.dataset.theme); } catch (_) {}
+    syncTheme();
   });
 
   // --- email assemblé côté client
-  const mail = $('.mail');
-  if (mail) { const a = mail.dataset.u + '@' + mail.dataset.d; mail.textContent = a; mail.href = 'mailto:' + a; }
+  $$('.mail').forEach(m => { const a = m.dataset.u + '@' + m.dataset.d; m.textContent = a; m.href = 'mailto:' + a; });
+
+  // les pages légales s'arrêtent ici : pas de CV, de trajet ni d'animations
+  if (!$('.cv-modal')) return;
 
   // --- aperçu du CV
   const modal = $('.cv-modal');
@@ -173,6 +179,14 @@
   const navLinks = $$('.nav-links a');
   const secs = navLinks.map(a => $(a.getAttribute('href')));
   let lastLeg = -1;
+  const cue = $('.route-cue'), cueN = $('.route-cue-n'), cueDots = $$('.route-cue-dots i');
+  // l'indicateur emmène à l'escale suivante (la position de scroll qui la fait apparaître)
+  cue.addEventListener('click', () => {
+    const next = Math.min(lastLeg + 1, stops.length - 1);
+    const p = clamp((at[next] + 4) / L * .92);
+    const top = routeSec.getBoundingClientRect().top + scrollY + p * (routeSec.offsetHeight - innerHeight);
+    scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+  });
 
   const progress = el => {
     const r = el.getBoundingClientRect();
@@ -192,7 +206,11 @@
     if (leg !== lastLeg) {
       lastLeg = leg;
       legs.forEach((el, i) => el.classList.toggle('is-on', i === leg));
+      cueN.textContent = cue.dataset.n.replace('{n}', leg + 1).replace('{total}', stops.length);
+      cueDots.forEach((el, i) => { el.classList.toggle('on', i <= leg); el.classList.toggle('cur', i === leg); });
     }
+    const rr = routeSec.getBoundingClientRect();
+    cue.classList.toggle('on', rr.top < innerHeight * .35 && rr.bottom > innerHeight * 1.05 && leg < stops.length - 1);
 
     doc.classList.toggle('past-hero', scrollY > innerHeight * .6);
 

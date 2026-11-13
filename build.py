@@ -15,10 +15,15 @@ import segno
 
 from content import (EDUCATION, EMAIL, EXPERIENCES, FIRST, HERO_LINE, LANGS, LAST, LINKEDIN, NAME, PHONE, ROUTE,
                      ROUTE_TARGETS, SITE_URL, T)
+from legal import GITHUB_PAGES_DATA, GITHUB_PRIVACY, LEGAL, SLUGS
 
 ROOT = Path(__file__).parent
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-FONTS = "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap"
+LANG_NAMES = {"fr": "Français", "en": "English", "es": "Español"}
+# sans JavaScript, les éléments animés restent visibles (lecteurs sans JS, agents, impression)
+NOSCRIPT = ('<noscript><style>[data-reveal],.hero-name .l,.hero-cities,.hero-bio,.hero-top,.hero-bottom,.nav-pill'
+            '{opacity:1!important;transform:none!important;filter:none!important}'
+            '.odo-col{transform:translateY(calc(var(--n) * -.9em))}</style></noscript>')
 
 e = html.escape
 
@@ -35,7 +40,7 @@ def pdf_name(lang):
 
 
 def qr_code():
-    """QR code vers le site : SVG pour la page et le CV, PNG haute résolution pour imprimer ou partager."""
+    """QR code vers le site : SVG pour la page, PNG haute résolution pour le CV (imprimable partout) et le partage."""
     qr = segno.make(SITE_URL, error="q")
     # noir sur blanc avec la marge standard de 4 modules : le plus lisible pour l'appareil photo d'un téléphone
     qr.save(ROOT / "assets" / "qr.svg", scale=10, border=4, dark="#000000", light="#ffffff")
@@ -55,11 +60,133 @@ def tr(v, lang):
 def odometer(value):
     """Chiffres sur rouleaux : chaque colonne défile de 0 jusqu'au bon chiffre."""
     digits = "".join(f"<span>{d}</span>" for d in range(10))
-    return "".join(f'<span class="odo-col" style="--n:{c}">{digits}</span>' for c in value)
+    return f'<span class="sr-only">{e(value)}</span>' + "".join(f'<span class="odo-col" style="--n:{c}" aria-hidden="true">{digits}</span>' for c in value)
 
 
 def letters(word, start):
     return "".join(f'<span class="l" style="--i:{start + i}">{e(c)}</span>' for i, c in enumerate(word))
+
+
+# ---------------------------------------------------------------- morceaux communs
+
+def head_links(lang, slug):
+    """URL canonique + versions dans les autres langues (adresses complètes, comme le veut Google)."""
+    path = f"{slug}/" if slug else ""
+    links = [f'<link rel="canonical" href="{SITE_URL}{lang}/{path}">']
+    links += [f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{l}/{path}">' for l in LANGS]
+    links.append(f'<link rel="alternate" hreflang="x-default" href="{SITE_URL}en/{path}">')
+    return "\n".join(links)
+
+
+def mail_link(user, domain, cls="mail"):
+    """Adresse assemblée par main.js ; sans JavaScript, elle reste lisible sous la forme « nom (at) domaine »."""
+    return f'<a class="{cls}" data-u="{e(user)}" data-d="{e(domain)}" href="#">{e(user)} (at) {e(domain)}</a>'
+
+
+def site_footer(lang, base, current=""):
+    """Pied de page : liens vers les pages légales. base = chemin vers la racine de la langue."""
+    lg = LEGAL[lang]
+    here = ' aria-current="page"'
+    links = "".join(f'<li><a href="{base}{s}/"{here if s == current else ""}>{e(lg["titles"][s])}</a></li>' for s in SLUGS)
+    return f"""<footer class="wrap legal-foot">
+  <nav aria-label="{e(lg['nav'])}"><ul class="legal-links">{links}</ul></nav>
+  <p class="copyright">© 2026 {e(NAME)}. {e(T[lang]['footer'])}</p>
+</footer>"""
+
+
+# ---------------------------------------------------------------- pages légales
+
+def legal_page(lang, slug):
+    t, lg = T[lang], LEGAL[lang]
+    title = lg["titles"][slug]
+    user, domain = EMAIL.split("@")
+    body = lg[slug].format(mail=mail_link(user, domain), gh_pages=GITHUB_PAGES_DATA, gh_privacy=GITHUB_PRIVACY,
+                           **{s: f"../{s}/" for s in SLUGS})
+    cur = ' aria-current="true"'
+    langs = "".join(f'<a href="../../{l}/{slug}/" hreflang="{l}" lang="{l}" aria-label="{LANG_NAMES[l]}"{cur if l == lang else ""}>{l.upper()}</a>'
+                    for l in LANGS)
+    return f"""<!doctype html>
+<html lang="{t['html_lang']}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(title)} — {e(NAME)}</title>
+<meta name="description" content="{e(title)} — {e(NAME)}">
+{head_links(lang, slug)}
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<script>try{{var s=localStorage.getItem('cl-theme');if(s)document.documentElement.dataset.theme=s;}}catch(_){{}}</script>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css?v={ver('fonts/fonts.css')}">
+<link rel="stylesheet" href="../../assets/style.css?v={ver('style.css')}">
+{NOSCRIPT}
+</head>
+<body>
+<a class="skip" href="#main">{e(t['skip'])}</a>
+<header class="nav-wrap">
+  <nav class="nav-pill" aria-label="Navigation">
+    <a class="nav-name" href="../">{e(NAME)}</a>
+    <span class="seg">{langs}</span>
+    <button class="theme" type="button" aria-label="{e(t['theme'])}">{MOON}</button>
+  </nav>
+</header>
+<main id="main" class="legal">
+  <p class="eyebrow">{e(lg['nav'])}</p>
+  <h1>{e(title)}</h1>
+  <p class="updated">{e(lg['updated'])}</p>
+  {body}
+  <p style="margin-top:40px"><a class="btn btn-quiet" href="../">{e(lg['back'])}</a></p>
+</main>
+{site_footer(lang, "../", slug)}
+<script src="../../assets/main.js?v={ver('main.js')}"></script>
+</body>
+</html>
+"""
+
+
+# ---------------------------------------------------------------- pour les moteurs et les agents IA
+
+def sitemap():
+    urls = [f"{SITE_URL}{l}/" for l in LANGS] + [f"{SITE_URL}{l}/{s}/" for l in LANGS for s in SLUGS]
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
+
+
+def llms_txt():
+    """Résumé en Markdown du site, lisible directement par un agent IA (convention llms.txt)."""
+    t = T["en"]
+    exps = "\n".join(f"- {x['year']['en']} · {x['role']['en']} — {tr(x['venue'], 'en')}, {x['city']['en']}. {x['desc']['en']}" for x in EXPERIENCES)
+    edus = "\n".join(f"- {x['years']['en']} · {x['school']} — {x['prog']['en']}" for x in EDUCATION)
+    pages = "\n".join(f"- [Portfolio ({LANG_NAMES[l]})]({SITE_URL}{l}/)" for l in LANGS)
+    cvs = "\n".join(f"- [CV ({LANG_NAMES[l]}, PDF)]({SITE_URL}cv/{pdf_name(l)})" for l in LANGS)
+    legal = "\n".join(f"- [{LEGAL['en']['titles'][s]}]({SITE_URL}en/{s}/)" for s in SLUGS)
+    return f"""# {NAME}
+
+> {t['meta']}
+
+{t['cv_profile']}
+
+## Pages
+{pages}
+
+## CV
+{cvs}
+
+## Experience
+{exps}
+
+## Education
+{edus}
+
+## Languages
+{", ".join(f"{a} ({b})" for a, b in t['langs'])}
+
+## Contact
+- Email: {EMAIL}
+- LinkedIn: {LINKEDIN}
+- Based in Madrid, Spain. {t['contact_p']}
+
+## Legal
+{legal}
+"""
 
 
 # ---------------------------------------------------------------- site
@@ -68,7 +195,7 @@ def page(lang):
     t = T[lang]
     cv_href = f"../cv/{pdf_name(lang)}"
     cur = ' aria-current="true"'
-    langs = "".join(f'<a href="../{l}/" hreflang="{l}"{cur if l == lang else ""}>{l.upper()}</a>' for l in LANGS)
+    langs = "".join(f'<a href="../{l}/" hreflang="{l}" lang="{l}" aria-label="{LANG_NAMES[l]}"{cur if l == lang else ""}>{l.upper()}</a>' for l in LANGS)
     nav = "".join(f'<a href="#{i}">{e(l)}</a>' for i, l in zip(["parcours", "experiences", "projets", "formation", "contact"], t["nav"]))
 
     # trajet
@@ -108,7 +235,7 @@ def page(lang):
     lw = t["loewe"]
     loewe_bullets = "".join(f"<li>{e(b)}</li>" for b in lw["bullets"])
 
-    stats = "".join(f'<div class="stat" style="--k:{k}"><p class="big-n odo" aria-label="{e(a)}">{odometer(a)}</p><h3>{e(b)}</h3><p>{e(c)}</p></div>'
+    stats = "".join(f'<div class="stat" style="--k:{k}"><p class="big-n odo">{odometer(a)}</p><h3>{e(b)}</h3><p>{e(c)}</p></div>'
                     for k, (a, b, c) in enumerate(t["stats"]))
     flyers = "".join(f'<div class="flyer f{i} p{i}"><span class="flyer-k">{e(k)}</span><strong>{e(w)}</strong><span class="flyer-d">Clément L.</span></div>'
                      for i, (k, w) in enumerate(t["flyers"]))
@@ -140,7 +267,13 @@ def page(lang):
     linkedin = f'<a class="btn btn-li" href="{li_href}" target="_blank" rel="noopener noreferrer">{LI_ICON} LinkedIn</a>' if LINKEDIN else ""
     li_float = f'<a class="li-btn" href="{li_href}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">{LI_ICON}</a>' if LINKEDIN else ""
     user, domain = EMAIL.split("@")
-    alternates = "".join(f'<link rel="alternate" hreflang="{l}" href="../{l}/">' for l in LANGS)
+    alt = t["alt"]
+    alternates = head_links(lang, "")
+    person = json.dumps({"@context": "https://schema.org", "@type": "Person", "name": NAME, "url": f"{SITE_URL}{lang}/",
+                         "jobTitle": t["cv_title"], "description": t["meta"], "knowsLanguage": LANGS,
+                         "address": {"@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES"},
+                         "affiliation": {"@type": "EducationalOrganization", "name": "Vatel Madrid"},
+                         "sameAs": [LINKEDIN] if LINKEDIN else []}, ensure_ascii=False)
 
     return f"""<!doctype html>
 <html lang="{t['html_lang']}">
@@ -154,9 +287,10 @@ def page(lang):
 {alternates}
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <script>try{{var s=localStorage.getItem('cl-theme');if(s)document.documentElement.dataset.theme=s;}}catch(_){{}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="{FONTS}">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v={ver('fonts/fonts.css')}">
 <link rel="stylesheet" href="../assets/style.css?v={ver('style.css')}">
+{NOSCRIPT}
+<script type="application/ld+json">{person}</script>
 </head>
 <body>
 <a class="skip" href="#main">{e(t['skip'])}</a>
@@ -179,7 +313,7 @@ def page(lang):
     <p class="hero-label">{e(t['hero_place'])}</p>
   </div>
   <div class="hero-mid">
-    <h1 class="hero-name"><span class="n1">{letters(FIRST, 0)}</span><span class="n2">{letters(LAST, len(FIRST))}</span></h1>
+    <h1 class="hero-name"><span class="sr-only">{e(NAME)}</span><span class="n1" aria-hidden="true">{letters(FIRST, 0)}</span><span class="n2" aria-hidden="true">{letters(LAST, len(FIRST))}</span></h1>
     <p class="hero-cities">{hero_line}</p>
     <p class="hero-bio">{e(t['hero_bio'])}</p>
   </div>
@@ -188,7 +322,7 @@ def page(lang):
       <a class="btn btn-outline" href="#contact">{e(t['cta2'])}</a>
     </div>
   </div>
-  <a class="scroll-cue" href="#parcours">{e(t['scroll'])}<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l4 4 4-4"/></svg></a>
+  <a class="scroll-cue" href="#parcours">{e(t['scroll'])}<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></a>
 </section>
 
 <section class="route-sec" id="parcours">
@@ -267,9 +401,9 @@ def page(lang):
 
     <div class="pj-duo">
       <article class="dark-card pj-bot spot" data-reveal>
-        <div class="bot-shots" aria-hidden="true">
-          <div class="bot-screen"><img src="../assets/projects/bot-chart.webp" alt="" width="1400" height="875" loading="lazy"><img class="alt" src="../assets/projects/bot-news.webp" alt="" width="1400" height="875" loading="lazy"></div>
-          <figure class="pj-phone ph-sm"><img src="../assets/projects/bot-mobile.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+        <div class="bot-shots">
+          <div class="bot-screen"><img src="../assets/projects/bot-chart.webp" alt="{e(alt['bot_chart'])}" width="1400" height="875" loading="lazy"><img class="alt" src="../assets/projects/bot-news.webp" alt="{e(alt['bot_news'])}" width="1400" height="875" loading="lazy"></div>
+          <figure class="pj-phone ph-sm"><img src="../assets/projects/bot-mobile.webp" alt="{e(alt['bot_mobile'])}" width="520" height="1125" loading="lazy"></figure>
         </div>
         <p class="eyebrow-sm">{e(bt['tag'])}</p>
         <h3>{e(bt['h'])}</h3>
@@ -278,10 +412,10 @@ def page(lang):
       </article>
 
       <article class="card pj-cesar spot" data-reveal>
-        <div class="cs-shots" aria-hidden="true">
-          <div class="cs-browser"><div class="ba-bar"><i></i><i></i><i></i><span class="ba-url">cesarmateu.github.io</span></div>
-            <div class="cs-view"><div class="cs-strip"><img src="../assets/projects/cesar-hero.webp" alt="" width="1400" height="875" loading="lazy"><img src="../assets/projects/cesar-route.webp" alt="" width="1400" height="875" loading="lazy"></div></div></div>
-          <figure class="pj-phone ph-sm"><img src="../assets/projects/cesar-mobile.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+        <div class="cs-shots">
+          <div class="cs-browser"><div class="ba-bar" aria-hidden="true"><i></i><i></i><i></i><span class="ba-url">cesarmateu.github.io</span></div>
+            <div class="cs-view"><div class="cs-strip"><img src="../assets/projects/cesar-hero.webp" alt="{e(alt['cesar_hero'])}" width="1400" height="875" loading="lazy"><img src="../assets/projects/cesar-route.webp" alt="{e(alt['cesar_route'])}" width="1400" height="875" loading="lazy"></div></div></div>
+          <figure class="pj-phone ph-sm"><img src="../assets/projects/cesar-mobile.webp" alt="{e(alt['cesar_mobile'])}" width="520" height="1125" loading="lazy"></figure>
         </div>
         <p class="eyebrow-sm">{e(cs['tag'])}</p>
         <h3>{e(cs['h'])}</h3>
@@ -295,11 +429,11 @@ def page(lang):
         <p class="eyebrow-sm">{e(fi['tag'])}</p>
         <h3>{e(fi['h'])}</h3>
         <ol class="pj-steps">{fi_steps}</ol>
-        <p class="pj-stat"><span class="big-n odo" aria-label="{e(fi['stat'])}">{odometer(fi['stat'])}</span><b>h</b><span class="pj-stat-l">{e(fi['stat_l'])}</span></p>
+        <p class="pj-stat"><span class="big-n odo">{odometer(fi['stat'])}</span><b>h</b><span class="pj-stat-l">{e(fi['stat_l'])}</span></p>
       </div>
-      <div class="pj-phones" aria-hidden="true">
-        <figure class="pj-phone ph-a"><img src="../assets/projects/fichas-1.webp" alt="" width="520" height="1125" loading="lazy"></figure>
-        <figure class="pj-phone ph-b"><img src="../assets/projects/fichas-2.webp" alt="" width="520" height="1125" loading="lazy"></figure>
+      <div class="pj-phones">
+        <figure class="pj-phone ph-a"><img src="../assets/projects/fichas-1.webp" alt="{e(alt['fichas_1'])}" width="520" height="1125" loading="lazy"></figure>
+        <figure class="pj-phone ph-b"><img src="../assets/projects/fichas-2.webp" alt="{e(alt['fichas_2'])}" width="520" height="1125" loading="lazy"></figure>
       </div>
     </article>
 
@@ -314,8 +448,8 @@ def page(lang):
         <div class="ba" role="img" aria-label="DRM Fishing : {e(rd['before'])} / {e(rd['after'])}">
           <div class="ba-bar"><i></i><i></i><i></i><span class="ba-url"><span class="u-old">drmfishing.com</span><span class="u-new">DRM Fishing · {e(rd['new_url'])}</span></span></div>
           <div class="ba-view">
-            <img class="ba-img" src="../assets/projects/drm-after.webp" alt="" width="1000" height="4200" loading="lazy">
-            <div class="ba-before"><img class="ba-img" src="../assets/projects/drm-before.webp" alt="" width="1000" height="3417" loading="lazy"></div>
+            <img class="ba-img" src="../assets/projects/drm-after.webp" alt="{e(alt['drm_after'])}" width="1000" height="4200" loading="lazy">
+            <div class="ba-before"><img class="ba-img" src="../assets/projects/drm-before.webp" alt="{e(alt['drm_before'])}" width="1000" height="3417" loading="lazy"></div>
             <span class="ba-tag ba-tag-b">{e(rd['before'])}</span><span class="ba-tag ba-tag-a">{e(rd['after'])}</span>
             <span class="ba-handle"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 6l-4 4 4 4M12 6l4 4-4 4"/></svg></span>
           </div>
@@ -353,7 +487,7 @@ def page(lang):
   </div>
 </section>
 
-<footer class="site-footer" id="contact">
+<section class="site-footer" id="contact">
   <div class="wrap">
     <div class="card contact-card spot" data-reveal>
       <div class="contact-copy">
@@ -362,7 +496,7 @@ def page(lang):
         <p class="footer-p">{e(t['contact_p'])} {e(t['cv_p'])}</p>
         <div class="row">
           <a class="btn btn-primary" href="{cv_href}" download>{DOWN} {e(t['cv_dl'])}</a>
-          <a class="btn btn-quiet mail" data-u="{e(user)}" data-d="{e(domain)}" href="#">…</a>
+          {mail_link(user, domain, "btn btn-quiet mail")}
           {linkedin}
         </div>
         <div class="row cv-langs"><span class="cv-langs-l">PDF</span>{cv_langs}<button class="btn btn-quiet btn-sm" type="button" data-open-cv>{e(t['cv_view'])}</button></div>
@@ -375,12 +509,12 @@ def page(lang):
         <img src="../cv/preview-{lang}.png" alt="CV — {e(NAME)}" width="794" height="1123" loading="lazy">
       </button>
     </div>
-    <p class="copyright">© 2026 {e(NAME)}. {e(t['footer'])}</p>
   </div>
-</footer>
+</section>
 </main>
+{site_footer(lang, "../")}
 
-<dialog class="cv-modal">
+<dialog class="cv-modal" aria-label="CV — {e(NAME)}">
   <div class="cv-modal-bar">
     <strong>CV — {e(NAME)}</strong>
     <span class="row"><span class="seg cv-seg">{cv_tabs}</span><a class="btn btn-primary btn-sm cv-pdf" href="{cv_href}" download>{DOWN} PDF</a>
@@ -396,6 +530,11 @@ def page(lang):
   <button class="btn btn-primary btn-sm" type="button" data-close>{e(t['close'])}</button></div>
 </dialog>
 {li_float}
+<button class="route-cue" type="button" data-route-next data-n="{e(t['route_cue_n'])}">
+  <span class="route-cue-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3v10M4 9l4 4 4-4"/></svg></span>
+  <span class="route-cue-txt"><span>{e(t['route_cue'])}</span><small class="route-cue-n">{e(t['route_cue_n'].format(n=1, total=len(ROUTE)))}</small></span>
+  <span class="route-cue-dots" aria-hidden="true">{"<i></i>" * len(ROUTE)}</span>
+</button>
 <button class="qr-btn" type="button" data-open-qr aria-label="{e(t['qr'])}" title="{e(t['qr'])}">{QR_ICON}<span>{e(t['qr'])}</span></button>
 <button class="phone-btn" type="button" data-phone aria-label="{e(t['mobile_view'])}" title="{e(t['mobile_view'])}">{PHONE_ICON}<span>{e(t['mobile_view'])}</span></button>
 <dialog class="phone-modal" aria-label="{e(t['mobile_view'])}">
@@ -439,17 +578,16 @@ def cv(lang):
     li = f'<li><a href="{e(quote(LINKEDIN, safe=":/"))}" style="color:inherit;text-decoration:none">{e(LINKEDIN.replace("https://", ""))}</a></li>' if LINKEDIN else ""
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><title>CV — {e(NAME)}</title>
-<link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="cv.css"></head>
 <body><div class="page">
   <aside>
-    <img class="photo" src="../assets/portrait.jpg" alt="">
+    <img class="photo" src="../assets/portrait.jpg" alt="{e(t['alt']['photo'])}">
     <h3>{e(t['cv_profile_h'])}</h3><p>{e(t['cv_profile'])}</p>
     <h3>{e(t['cv_contact_h'])}</h3>
     <ul><li>{e(EMAIL)}</li><li>{e(PHONE)}</li><li>{e(t['cv_city'])}</li>{li}<li>{e(t['nationality'])}</li></ul>
     <h3>{e(t['cv_langs_h'])}</h3><ul>{langs}</ul>
     <h3>{e(t['cv_int_h'])}</h3><ul>{ints}</ul>
-    <div class="qr"><img src="../assets/qr.svg" alt=""><p><b>{e(t['cv_qr'])}</b>{e(SITE_URL.replace('https://', '').rstrip('/')).replace('-', '&#8209;').replace('/', '<wbr>/')}</p></div>
+    <div class="qr"><img src="../assets/qr.png" alt=""><p><b>{e(t['cv_qr'])}</b>{e(SITE_URL.replace('https://', '').rstrip('/')).replace('-', '&#8209;').replace('/', '<wbr>/')}</p></div>
   </aside>
   <section>
     <header><p class="kicker">{e(t['cv_title'])} · Vatel Madrid</p><h1>{e(NAME)}</h1></header>
@@ -473,8 +611,13 @@ def main():
         d = ROOT / lang
         d.mkdir(exist_ok=True)
         (d / "index.html").write_text(page(lang), encoding="utf-8")
+        for slug in SLUGS:
+            (d / slug).mkdir(exist_ok=True)
+            (d / slug / "index.html").write_text(legal_page(lang, slug), encoding="utf-8")
     (ROOT / "index.html").write_text(root_index(), encoding="utf-8")
-    print("site : fr/ en/ es/")
+    (ROOT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
+    (ROOT / "llms.txt").write_text(llms_txt(), encoding="utf-8")
+    print("site : fr/ en/ es/ + pages légales, sitemap.xml, llms.txt")
 
     if "--no-cv" in sys.argv:
         return

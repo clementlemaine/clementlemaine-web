@@ -1,3 +1,4 @@
+@import url("../assets/fonts/fonts.css");
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -6,7 +7,7 @@ body { font: 400 9.4pt/1.45 "Instrument Sans", sans-serif; color: #16181d; -webk
 
 aside { background: #14243a; color: #d6dfeb; padding: 12mm 8mm 10mm; display: flex; flex-direction: column; }
 .qr { margin-top: auto; display: flex; align-items: center; gap: 3mm; padding-top: 5mm; }
-.qr img { width: 22mm; height: 22mm; border-radius: 1.5mm; flex: none; background: #fff; }
+.qr img { width: 22mm; height: 22mm; border-radius: 1.5mm; flex: none; background: #fff; image-rendering: pixelated; }
 .qr p { margin: 0; font-size: 6.5pt; line-height: 1.4; color: #b9c5d6; }
 .qr b { display: block; font-size: 7.8pt; letter-spacing: .06em; text-transform: uppercase; color: #e2c48a; word-break: normal; }
 .photo { width: 40mm; height: 46mm; object-fit: cover; object-position: center 20%; display: block; margin: 0 auto 8mm; border-radius: 3mm; }
